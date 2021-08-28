@@ -1,0 +1,5 @@
+Run `sphinx-apidoc -o . ../../pyTrayStart' in this directory.
+
+This will generate `modules.rst' and `pyTrayStart.rst'.
+
+Then include `modules.rst' in your `index.rst' file.

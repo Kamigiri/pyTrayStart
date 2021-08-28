@@ -1,0 +1,22 @@
+{
+    "dev": {
+        "vscode": {
+            "path": "path",
+            "type": "application"
+        },
+        "pycharm": {
+            "path": "path",
+            "type": "application"
+        },
+        "Unreal Engine": {
+            "path": "path",
+            "type": "application"
+        }
+    },
+    "games": {
+        "ffxiv": {
+            "path": "path",
+            "type": "application"
+        }
+    }
+}
