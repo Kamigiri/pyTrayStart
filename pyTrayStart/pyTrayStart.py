@@ -8,13 +8,14 @@ import subprocess
 import sys
 
 import icoextract
+from PyQt5 import QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
 def get_styles(filename):
-    file = os.path.join(os.path.split(__file__)[0], f"resources/styles/{filename}.stylesheet")
+    file = f"resources/styles/{filename}.stylesheet"
     style = open(file, 'r').read()
     return style
 
@@ -50,7 +51,9 @@ class TableWidget(QTableWidget):
         self.horizontalHeader().setDefaultSectionSize(250)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.setStyleSheet(get_styles("table"))
+        self.setSelectionBehavior(QAbstractItemView.SelectRows)
         self._populate()
+        self.doubleClicked.connect(self._removeRow)
 
     def _addRow(self):
         row_count = self.rowCount()
@@ -87,22 +90,32 @@ class TableWidget(QTableWidget):
         os.execv(sys.executable, ['python'] + sys.argv)
 
     def _removeRow(self):
-        if self.rowCount() > 0:
-            self.removeRow(self.rowCount() - 1)
+        self.removeRow(self.currentIndex().row())
 
     def _populate(self):
-        with open("resources/json/action.json") as actions_file:
-            actions_json = json.load(actions_file)
+        if os.stat("resources/json/action.json").st_size != 0:
+            with open("resources/json/action.json") as actions_file:
+                actions_json = json.load(actions_file)
 
-        actions_file.close()
-        for label in actions_json:
-            for action_items in actions_json[label]:
-                row_position = self.rowCount() - 1
-                self.insertRow(row_position)
-                self.setItem(row_position, 0, QTableWidgetItem(action_items))
-                self.setItem(row_position, 1, QTableWidgetItem(actions_json[label][action_items]["path"]))
-                self.setItem(row_position, 2, QTableWidgetItem(actions_json[label][action_items]["type"]))
-                self.setItem(row_position, 3, QTableWidgetItem(label))
+            actions_file.close()
+            deleteButton = QtWidgets.QPushButton("delete_this_row")
+            deleteButton.clicked.connect(self.deleteClicked)
+            for label in actions_json:
+                for action_items in actions_json[label]:
+                    row_position = self.rowCount() - 1
+                    self.insertRow(row_position)
+                    self.setItem(row_position, 0, QTableWidgetItem(action_items))
+                    self.setItem(row_position, 1, QTableWidgetItem(actions_json[label][action_items]["path"]))
+                    self.setItem(row_position, 2, QTableWidgetItem(actions_json[label][action_items]["type"]))
+                    self.setItem(row_position, 3, QTableWidgetItem(label))
+                    self.setCellWidget(row_position, 4, deleteButton)
+
+    @pyqtSlot()
+    def deleteClicked(self):
+        button = self.sender()
+        if button:
+            row = self.table.indexAt(button.pos()).row()
+            self.table.removeRow(row)
 
 
 class Options(QWidget):
@@ -154,8 +167,12 @@ def create_action(name=None, path=None, action_type=None):
 
 
 def getActions():
+    if os.stat("resources/json/action.json").st_size == 0:
+        return []
+
     with open("resources/json/action.json") as actions_file:
         actions_json = json.load(actions_file)
+
 
     actions_file.close()
     action_list = []
