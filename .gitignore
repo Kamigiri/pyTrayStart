@@ -14,6 +14,7 @@
 *.egg
 *.egg-info
 dist
+dist_msi
 build
 eggs
 parts
@@ -40,3 +41,4 @@ pip-log.txt
 # Project custom
 !/pyTrayStart/resources/json/action.json
 !/pyTrayStart/action_icon.ico
+!/dist_msi/
