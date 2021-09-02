@@ -36,3 +36,7 @@ pip-log.txt
 
 ## paver generated files
 /paver-minilib.zip
+
+# Project custom
+!/pyTrayStart/resources/json/action.json
+!/pyTrayStart/action_icon.ico
