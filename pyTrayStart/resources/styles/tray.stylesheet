@@ -1,0 +1,20 @@
+#tray {
+        left: 75px;
+        bottom:50px;
+        border: 1px solid #000;
+        }
+QLabel{
+     color: #FFF;
+}
+QMenu {
+    background-color: rgb(49,49,49);
+    color: #FFF;
+    left: 25px;
+}
+QMenu::item {
+padding: 2px;
+margin: 2px;
+}
+QMenu::item::selected {
+    background-color: rgb(30,30,30);
+}

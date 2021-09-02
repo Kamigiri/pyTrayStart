@@ -3,6 +3,7 @@
 """Program entry point"""
 
 import json
+import os.path
 import subprocess
 import sys
 
@@ -11,94 +12,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-menu_style = ("""
-        #tray {
-        left: 75px;
-        bottom:50px;
-        border: 1px solid #000;
-        }
-        QLabel {
-             color: #FFF;
-        }
-        
-        QMenu {
-            background-color: rgb(49,49,49);
-            color: #FFF;
-            left: 25px;
-            
-                     
-        }
-        QMenu::item {
-        padding: 2px;
-        margin: 2px;
-        
-            
-        }
 
-        QMenu::item::selected {
-            background-color: rgb(30,30,30);
-        }
-    """)
-
-table_style = ("""
-        QTableWidgetItem {
-             color: #FFF;
-        }
-
-        QTableWidget {
-            background-color: rgb(49,49,49);
-            color: #FFF;
-            left: 25px;
-        }
-        QHeaderView::section {
-            background-color: rgb(49,49,49);
-            color: #FFF;
-            left: 25px;
-        }
-        QTableCornerButton::section  {
-            background-color: rgb(49,49,49);
-            color: #FFF;
-            left: 25px;
-        }
-        QTableWidget::item {
-        padding: 2px;
-        margin: 2px;
-        border: 1px solid rgb(64, 63, 62);
-        }
-        
-
-        QTableWidget::item::selected {
-            background-color: rgb(30,30,30);
-        }
-    """)
-app_style = ("""
-        QWidget {
-             color: #FFF;
-        }
-
-        QWidget {
-            background-color: rgb(49,49,49);
-            color: #FFF;
-            left: 25px;
-        }
-        QPushButton
-        {
-            background-color: rgb(49,49,49);
-            color: #FFF;
-            left: 25px;
-        }
-        
-        QWidget::item {
-        padding: 2px;
-        margin: 2px;
-
-
-        }
-
-        QWidget::item::selected {
-            background-color: rgb(30,30,30);
-        }
-    """)
+def get_styles(filename):
+    file = os.path.join(os.path.split(__file__)[0], f"resources/styles/{filename}.stylesheet")
+    style = open(file, 'r').read()
+    return style
 
 
 def write_json(data, sections):
@@ -131,7 +49,7 @@ class TableWidget(QTableWidget):
         self.verticalHeader().setDefaultSectionSize(50)
         self.horizontalHeader().setDefaultSectionSize(250)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
-        self.setStyleSheet(table_style)
+        self.setStyleSheet(get_styles("table"))
         self._populate()
 
     def _addRow(self):
@@ -195,11 +113,11 @@ class TableWidget(QTableWidget):
                 self.setItem(row_position, 3, QTableWidgetItem(label))
 
 
-class AppDemo(QWidget):
+class Options(QWidget):
     def __init__(self):
         super().__init__()
         self.resize(1122, 632)
-        self.setStyleSheet(app_style)
+        self.setStyleSheet(get_styles("options"))
         self.setWindowTitle("PyTrayStart")
         self.setWindowIcon(QIcon("resources/icons/icon.ico"))
 
@@ -295,7 +213,7 @@ class Tray(QSystemTrayIcon):
     @staticmethod
     def add_options():
         opt_item = QAction("Options")
-        opt = AppDemo()
+        opt = Options()
         opt_item.triggered.connect((lambda: opt.show()))
 
         return opt_item
@@ -310,7 +228,7 @@ class Tray(QSystemTrayIcon):
 # Create the menu
 menu = QMenu()
 menu.setMinimumWidth(200)
-menu.setStyleSheet(menu_style)
+menu.setStyleSheet(get_styles("tray"))
 
 actions = getActions()
 for action in actions:
