@@ -1,21 +1,25 @@
 {
     "dev": {
         "vscode": {
-            "path": "path",
+            "path": "C:\\Users\\Kamig\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
             "type": "application"
         },
         "pycharm": {
-            "path": "path",
+            "path": "C:\\Users\\Kamig\\AppData\\Local\\JetBrains\\Toolbox\\apps\\PyCharm-P\\ch-0\\212.4746.96\\bin\\pycharm64.exe",
             "type": "application"
         },
         "Unreal Engine": {
-            "path": "path",
+            "path": "Z:\\EGames\\UE_4.26\\Engine\\Binaries\\Win64\\UE4Editor.exe",
             "type": "application"
         }
     },
     "games": {
         "ffxiv": {
-            "path": "path",
+            "path": "Z:\\FF\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\boot\\ffxivboot.exe",
+            "type": "application"
+        },
+        "ffxiv2": {
+            "path": "Z:\\FF\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\boot\\ffxivboot.exe",
             "type": "application"
         }
     }

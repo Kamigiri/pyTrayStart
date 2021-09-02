@@ -84,19 +84,11 @@ class TableWidget(QTableWidget):
             action_list.append(action_dict)
 
         write_json(action_list, sections)
+        os.execv(sys.executable, ['python'] + sys.argv)
 
     def _removeRow(self):
         if self.rowCount() > 0:
             self.removeRow(self.rowCount() - 1)
-
-    def _copyRow(self):
-        self.insertRow(self.rowCount())
-        row_count = self.rowCount()
-        column_count = self.columnCount()
-
-        for j in range(column_count):
-            if not self.item(row_count - 2, j) is None:
-                self.setItem(row_count - 1, j, QTableWidgetItem(self.item(row_count - 2, j).text()))
 
     def _populate(self):
         with open("resources/json/action.json") as actions_file:
@@ -130,17 +122,13 @@ class Options(QWidget):
         button_new.clicked.connect(table._addRow)
         button_layout.addWidget(button_new)
 
-        button_copy = QPushButton('Copy')
-        button_copy.clicked.connect(table._copyRow)
-        button_layout.addWidget(button_copy)
-
         button_remove = QPushButton('Remove')
         button_remove.clicked.connect(table._removeRow)
-        button_layout.addWidget(button_remove, alignment=Qt.AlignTop)
+        button_layout.addWidget(button_remove)
 
-        button_save = QPushButton('Save')
+        button_save = QPushButton('Save and Quit')
         button_save.clicked.connect(table._save)
-        button_layout.addWidget(button_save)
+        button_layout.addWidget(button_save, alignment=Qt.AlignTop)
 
         main_layout.addLayout(button_layout)
         self.setLayout(main_layout)
